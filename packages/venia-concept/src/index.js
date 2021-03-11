@@ -1,6 +1,6 @@
 import React from 'react';
-// import { render } from 'react-dom';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { render } from 'react-dom';
+// import { renderToStaticMarkup } from 'react-dom/server';
 
 import { ApolloLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
@@ -113,22 +113,22 @@ const apolloLink = ApolloLink.from([
     Adapter.apolloLink(apiBase)
 ]);
 
-// render(
-//     <Adapter apiBase={apiBase} apollo={{ link: apolloLink }} store={store}>
-//         <AppContextProvider>
-//             <App />
-//         </AppContextProvider>
-//     </Adapter>,
-//     document.getElementById('root')
-// );
-
-renderToStaticMarkup(
+render(
     <Adapter apiBase={apiBase} apollo={{ link: apolloLink }} store={store}>
         <AppContextProvider>
             <App />
         </AppContextProvider>
-    </Adapter>
+    </Adapter>,
+    document.getElementById('root')
 );
+
+// renderToStaticMarkup(
+//     <Adapter apiBase={apiBase} apollo={{ link: apolloLink }} store={store}>
+//         <AppContextProvider>
+//             <App />
+//         </AppContextProvider>
+//     </Adapter>
+// );
 
 // avoid running browser-specific code in a Node environment
 if (globalThis.document) {

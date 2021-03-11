@@ -86,14 +86,14 @@ module.exports = async env => {
         target: 'node',
         output: {
             ...config.output,
-            filename: '[name].[contenthash].SERVER.js',
-            strictModuleExceptionHandling: true,
-            chunkFilename: '[name].[chunkhash].SERVER.js'
+            filename: '[name].[hash].SERVER.js',
+            strictModuleExceptionHandling: true
         },
         devtool: false,
         optimization: {
             minimize: false
-        }
+        },
+        plugins: [...config.plugins]
     });
 
     // remove HtmlWebpackPlugin
