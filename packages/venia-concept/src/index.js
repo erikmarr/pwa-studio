@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+// import { render } from 'react-dom';
+import { renderToStaticMarkup } from 'react-dom/server';
 
 import { ApolloLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
@@ -11,7 +12,7 @@ import setWithPath from 'lodash.set';
 import MutationQueueLink from '@adobe/apollo-link-mutation-queue';
 
 import { Util } from '@magento/peregrine';
-import { Adapter } from '@magento/venia-drivers';
+import { Adapter } from '@magento/venia-ui/lib/drivers';
 import store from './store';
 import app from '@magento/peregrine/lib/store/actions/app';
 import App, { AppContextProvider } from '@magento/venia-ui/lib/components/App';
@@ -102,7 +103,7 @@ const apolloLink = ApolloLink.from([
         },
         attempts: {
             max: 5,
-            retryIf: error => error && navigator.onLine
+            retryIf: error => error && globalThis.navigator && navigator.onLine
         }
     }),
     authLink,
@@ -112,13 +113,21 @@ const apolloLink = ApolloLink.from([
     Adapter.apolloLink(apiBase)
 ]);
 
-ReactDOM.render(
+// render(
+//     <Adapter apiBase={apiBase} apollo={{ link: apolloLink }} store={store}>
+//         <AppContextProvider>
+//             <App />
+//         </AppContextProvider>
+//     </Adapter>,
+//     document.getElementById('root')
+// );
+
+renderToStaticMarkup(
     <Adapter apiBase={apiBase} apollo={{ link: apolloLink }} store={store}>
         <AppContextProvider>
             <App />
         </AppContextProvider>
-    </Adapter>,
-    document.getElementById('root')
+    </Adapter>
 );
 
 // avoid running browser-specific code in a Node environment
